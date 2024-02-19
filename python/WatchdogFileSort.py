@@ -10,12 +10,12 @@ from watchdog.events import FileSystemEventHandler
 
 # ! FILL IN BELOW
 # ? folder to track e.g. Windows: "C:\\Users\\UserName\\Downloads"
-source_dir = r"path/to/your/Downloads" 
-dest_dir_sfx = r"path/to/your/SoundFiles"
-dest_dir_music = r"path/to/your/MusicFiles"
-dest_dir_video = r"path/to/your/VideoFiles"
-dest_dir_image = r"path/to/your/ImageFiles"
-dest_dir_documents = r"path/to/your/Documents"
+source_dir = r"C:\Users\My world\Documents\test" 
+dest_dir_sfx = r"C:\Users\My world\Documents\result\sfx"
+dest_dir_music = r"C:\Users\My world\Documents\result\audio"
+dest_dir_video = r"C:\Users\My world\Documents\result\video"
+dest_dir_image = r"C:\Users\My world\Documents\result\image"
+dest_dir_documents = r"C:\Users\My world\Documents\result\doc"
 
 # ? supported image types
 image_extensions = [".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi", ".png", ".gif", ".webp", ".tiff", ".tif", ".psd", ".raw", ".arw", ".cr2", ".nrw",
@@ -57,11 +57,14 @@ class MoverHandler(FileSystemEventHandler):
         with scandir(source_dir) as entries:
             for entry in entries:
                 name = entry.name
-                self.check_audio_files(entry, name)
-                self.check_video_files(entry, name)
-                self.check_image_files(entry, name)
-                self.check_document_files(entry, name)
-
+                if (self.check_audio_files(entry, name)):
+                    continue
+                if (self.check_video_files(entry, name)):
+                    continue
+                if (self.check_image_files(entry, name)):
+                    continue
+                if (self.check_document_files(entry, name)):
+                    continue 
     def check_audio_files(self, entry, name):  # * Checks all Audio Files
         for audio_extension in audio_extensions:
             if name.endswith(audio_extension) or name.endswith(audio_extension.upper()):
@@ -71,24 +74,32 @@ class MoverHandler(FileSystemEventHandler):
                     dest = dest_dir_music
                 move_file(dest, entry, name)
                 logging.info(f"Moved audio file: {name}")
+                return True
+        return False
 
     def check_video_files(self, entry, name):  # * Checks all Video Files
         for video_extension in video_extensions:
             if name.endswith(video_extension) or name.endswith(video_extension.upper()):
                 move_file(dest_dir_video, entry, name)
                 logging.info(f"Moved video file: {name}")
+                return True
+        return False
 
     def check_image_files(self, entry, name):  # * Checks all Image Files
         for image_extension in image_extensions:
             if name.endswith(image_extension) or name.endswith(image_extension.upper()):
                 move_file(dest_dir_image, entry, name)
                 logging.info(f"Moved image file: {name}")
+                return True
+        return False
 
     def check_document_files(self, entry, name):  # * Checks all Document Files
         for documents_extension in document_extensions:
             if name.endswith(documents_extension) or name.endswith(documents_extension.upper()):
                 move_file(dest_dir_documents, entry, name)
                 logging.info(f"Moved document file: {name}")
+                return True
+        return False
 
 
 # ! NO NEED TO CHANGE BELOW CODE
