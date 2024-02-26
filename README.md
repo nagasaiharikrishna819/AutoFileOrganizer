@@ -33,7 +33,7 @@ It looks like you've provided a set of instructions for setting up and running a
    - Open a terminal (Command Prompt in Windows or Terminal in macOS).
    - Run the following command to install the required `watchdog` library:
      ```bash
-     pip install watchdog
+     pip install -r requirements.txt
      ```
 
 5. **Open Terminal in Visual Studio Code:**
